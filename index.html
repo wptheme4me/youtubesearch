@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Get Youtube videos by search word</title>
+</head>
+<style>
+    #list_videos div {
+        display: block;
+        position: relative;
+        float: left;
+        width: 320px;
+        height: 320px;
+        border: 5px solid grey;
+        margin: 5px;
+    }
+</style>
+<body>
+    <form id='registracija_sheet'>
+        <input type="text" id="q" placeholder="Write search word">
+        <input type="submit" value="Get Videos" id="submit_form">
+    </form>
+    <div id="list_videos"></div>
+    <script>
+        var result="",data="",fragment=document.createDocumentFragment(),form=document.getElementById("registracija_sheet"),query=document.getElementById("q"),list_videos=document.getElementById("list_videos"),submitBtn=document.getElementById("submit_form");function sendForm(e){var t="https://script.google.com/macros/s/AKfycbx9jQa5Y1NJmuMskCPUKr-wX-iCcaXEMmlUe8LS5nPz20bZDHC0/exec?q="+e,n=new XMLHttpRequest;n.onloadstart=function(e){list_videos.innerText="Sending request",console.log("onLoadStart "+e)},n.onprogress=function(e){list_videos.innerText="Waiting for response",console.log("onProgress "+e)},n.onload=function(e){console.log("onLoad "+e),console.log("Data "+this.responseText),result=JSON.parse(this.responseText),console.log("JSON "+result),list_videos.innerText="Success",createVideo(result)},n.onerror=function(e){list_videos.innerText="Error",console.log("onError "+e)},n.open("GET",t),n.send()}function createVideo(e){var t,n=e.items||!1;n?((t=document.createElement("p")).innerText="Search results",fragment.appendChild(t),n.forEach(function(e){var t=document.createElement("div"),n=document.createElement("img"),o=document.createElement("p");n.src=e.snippet.thumbnails.medium.url,o.textContent=e.snippet.description,t.appendChild(n),t.appendChild(o),fragment.appendChild(t)})):((t=document.createElement("p")).textContent="No results for this query",fragment.appendChild(t));list_videos.appendChild(fragment)}submitBtn.addEventListener("click",function(e){e.preventDefault(),query.value?(console.log("True"),sendForm(data=query.value)):console.log("False")});
+    </script>
+</body>
+
+</html>
